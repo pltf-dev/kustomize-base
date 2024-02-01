@@ -1,0 +1,36 @@
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: castai
+  namespace: argo-cd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: addons
+  sources:
+    - chart: castai-agent
+      repoURL: https://castai.github.io/helm-charts
+      targetRevision: 0.64.12
+      helm:
+        releaseName: castai-agent
+        valueFiles:
+          - $gitops/castai/helm-values.yaml
+    - ref: gitops
+      repoURL: https://github.com/pltf-dev/kustomize-base.git
+      targetRevision: HEAD
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: castai-agent
+  syncPolicy:
+    automated:
+      prune: true    
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+    retry:
+      limit: 1
+      backoff:
+        duration: 5s 
+        factor: 2 
+        maxDuration: 1m

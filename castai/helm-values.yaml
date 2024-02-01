@@ -1,0 +1,22 @@
+---
+nameOverride: ""
+fullnameOverride: castai-agent
+
+apiKeySecretRef: "castai-agent"
+
+provider: "eks"
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 128Mi
+  limits:
+    cpu: "1"
+    memory: 512Mi
+
+
+createNamespace: false
+clusterVPA:
+  enabled: false
+priorityClass:
+  enabled: false
