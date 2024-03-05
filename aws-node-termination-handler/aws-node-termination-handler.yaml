@@ -1,0 +1,33 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: aws-node-termination-handler
+  namespace: argo-cd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  project: addons
+  source:
+    repoURL: https://aws.github.io/eks-charts
+    chart: aws-node-termination-handler
+    targetRevision: 0.21.0
+    helm:
+      parameters:
+        - name: awsRegion
+          value: "us-east-1"
+        - name: rbac.pspEnabled
+          value: "false"
+        - name: emitKubernetesEvents
+          value: "true"
+        - name: jsonLogging
+          value: "true"
+  destination:
+    namespace: kube-system
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
