@@ -19,4 +19,6 @@ createNamespace: false
 clusterVPA:
   enabled: false
 priorityClass:
-  enabled: false
+  enabled: true
+
+replicaCount: 2
