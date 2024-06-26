@@ -11,7 +11,7 @@ spec:
   sources:
     - chart: castai-agent
       repoURL: https://castai.github.io/helm-charts
-      targetRevision: 0.64.12
+      targetRevision: 0.76.0
       helm:
         releaseName: castai-agent
         valueFiles:
